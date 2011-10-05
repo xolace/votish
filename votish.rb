@@ -4,6 +4,8 @@ require 'datamapper'
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/blog.db")
 
 #this is a hotfix
+#this is a cdawg comment
+
 class Vote
   include DataMapper::Resource
   property :id, Serial
