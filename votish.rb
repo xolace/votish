@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'datamapper'
-
+#hello this is a comment 
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/blog.db")
 
 class Vote
