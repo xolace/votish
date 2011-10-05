@@ -2,9 +2,14 @@ require 'rubygems'
 require 'sinatra'
 require 'datamapper'
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/blog.db")
+<<<<<<< HEAD
 #this is a cdawg comment
 
 
+=======
+
+#this is a hotfix
+>>>>>>> master
 class Vote
   include DataMapper::Resource
   property :id, Serial
