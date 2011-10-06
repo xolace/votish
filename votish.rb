@@ -48,13 +48,12 @@ get '/add/:name' do
     :name => "#{params[:name]}",
   })
   puts singer.save
-  puts "HELLO MISTER"
   "#{params[:name]}'s voting code is #{singer.id}"
 end
 
 get '/list' do
-  singers = Singer.all
-  singers.each do |singer|
-    "#{singer.name} - #{singer.votes.count}"
-    end
-  end
+  @singers = Singer.all
+  erb :list
+end
+  
+
