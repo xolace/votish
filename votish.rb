@@ -3,15 +3,12 @@ require 'sinatra'
 require 'datamapper'
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/blog.db")
 
-#this is a hotfix
-#this is a cdawg comment
-
 class Vote
   include DataMapper::Resource
   property :id, Serial
   property :cell, String
   property :date, DateTime
-  belongs_to :singer
+ 
 end
 
 Vote.auto_migrate! unless Vote.storage_exists?
@@ -20,7 +17,7 @@ class Singer
   include DataMapper::Resource
   property :id, Serial
   property :name, String
-  has n, :votes
+  property :tally, Integer
 end
 
 Singer.auto_migrate! unless Singer.storage_exists?
@@ -51,9 +48,5 @@ get '/add/:name' do
   "#{params[:name]}'s voting code is #{singer.id}"
 end
 
-get '/list' do
-  @singers = Singer.all
-  erb :list
-end
   
 
