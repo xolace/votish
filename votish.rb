@@ -55,7 +55,7 @@ end
 
 get '/list' do
   singers = Singer.all
-  singers.each do |singer|
-    "#{singer.name} - #{singer.votes.count}"
-    end
-  end
+  erb :list
+end
+  
+
