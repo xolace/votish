@@ -12,7 +12,8 @@ class Vote
   property :cell, String
   property :vote, String
   property :date, DateTime
-  belongs_to :singer
+  has n, :singerID
+  belongs_to :singer :through => :singerId
 end
 
 Vote.auto_migrate! unless Vote.storage_exists?
@@ -22,8 +23,6 @@ class Singer
   property :id, Serial
   property :name, String
   property :smscode, String
-  property :lastvote, DateTime
-  has n, :votes
 end
 Singer.auto_migrate! unless Singer.storage_exists?
 
