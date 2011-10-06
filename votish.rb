@@ -8,7 +8,7 @@ class Vote
   property :id, Serial
   property :cell, String
   property :date, DateTime
- 
+  
 end
 
 Vote.auto_migrate! unless Vote.storage_exists?
@@ -24,13 +24,13 @@ Singer.auto_migrate! unless Singer.storage_exists?
 
 helpers do
   def check(cell,vote)
-    post = Post.first_or_create({:cell => "#{cell}"}, {
+    post = Vote.first_or_create({:cell => "#{cell}"}, {
       :cell => "#{cell}",
       :vote  => "#{vote}",
       :date => Time.now
     })
     puts post.save
-    "You have succesfully added your vote. #{cell} #{vote}"
+    "You have succesfully added your vote. #{post.cell} #{post.vote}"
   end
 
 end
@@ -48,5 +48,13 @@ get '/add/:name' do
   "#{params[:name]}'s voting code is #{singer.id}"
 end
 
-  
+get '/list' do
+  unless Singer.empty? 
+  @singers = Singer.all
+  #"This should print. #{@singers.inspect}"
+  @singers.each do | singer |
+  "[#{singer.name}] (#{singer.id}) => #{singer.tally}"
+end
+end
+end
 
