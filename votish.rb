@@ -10,10 +10,8 @@ class Vote
   include DataMapper::Resource
   property :id, Serial
   property :cell, String
-  property :vote, String
   property :date, DateTime
-  has n, :singerID
-  belongs_to :singer :through => :singerId
+  belongs_to :singer
 end
 
 Vote.auto_migrate! unless Vote.storage_exists?
@@ -22,8 +20,9 @@ class Singer
   include DataMapper::Resource
   property :id, Serial
   property :name, String
-  property :smscode, String
+  has n, :votes
 end
+
 Singer.auto_migrate! unless Singer.storage_exists?
 
 helpers do
