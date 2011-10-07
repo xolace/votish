@@ -7,6 +7,7 @@ class Vote
   include DataMapper::Resource
   property :id, Serial
   property :cell, String
+  property :ballot, String
   property :date, DateTime
   
 end
@@ -17,26 +18,41 @@ class Singer
   include DataMapper::Resource
   property :id, Serial
   property :name, String
-  property :tally, Integer
+  property :tally, Integer , :default => 0
 end
 
 Singer.auto_migrate! unless Singer.storage_exists?
 
 helpers do
-  def check(cell,vote)
-    post = Vote.first_or_create({:cell => "#{cell}"}, {
+  def check(cell,ballot)
+    post = Vote.create(
       :cell => "#{cell}",
-      :vote  => "#{vote}",
+      :ballot  => "#{ballot}",
       :date => Time.now
-    })
-    puts post.save
-    "You have succesfully added your vote. #{post.cell} #{post.vote}"
+       )
+    puts post.ballot
+    "It worked! #{post.ballot}"
   end
 
 end
 
-get '/vote/:cell/:vote' do
-  check(params[:cell],params[:vote])
+get '/vote/:cell/:ballot' do
+     check = Vote.first( :cell => "#{params[:cell]}" )
+     if check.nil?
+     singer = Singer.first( :id => "#{params[:ballot].to_i}" )
+     puts singer.inspect
+     post = Vote.create(
+      :cell => "#{params[:cell]}",
+      :ballot  => "#{params[:ballot]}",
+      :date => Time.now
+       )
+    singer.tally += 1
+    puts singer.save
+    puts post.save
+    "We have added your vote: #{post.cell} for #{post.ballot}"
+    else
+    "Vote rejected, nice try though"
+    end
 end
 
 
@@ -46,15 +62,11 @@ get '/add/:name' do
   })
   puts singer.save
   "#{params[:name]}'s voting code is #{singer.id}"
+
 end
 
-get '/list' do
-  unless Singer.empty? 
-  @singers = Singer.all
-  #"This should print. #{@singers.inspect}"
-  @singers.each do | singer |
-  "[#{singer.name}] (#{singer.id}) => #{singer.tally}"
-end
-end
-end
+get '/results' do
+   @singers = Singer.all
+   erb :results
+   end
 
