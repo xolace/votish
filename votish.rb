@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'sinatra'
 require 'datamapper'
 
@@ -70,14 +69,18 @@ get '/add/:name/3233465674' do
 
 end
 
-get '/del/3232465874' do
+get '/del' do
   erb :del
 end
 
-post '/del/3232465674/take' do
-  @singer = Singer.first( :id => "#{params[:id]}" )
+post '/del/take' do
+  if params[:password].to_i == 3232465674
+  @person = Singer.first( :id => "#{params[:id].to_i}" )
   erb :rem
-  @singer.destroy
+  @person.destroy
+  else
+  "Permission denied"
+end
 end
 
 get '/results' do
