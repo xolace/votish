@@ -53,9 +53,9 @@ get '/vote/:cell/:ballot' do
     singer.tally += 1
     puts singer.save
     puts post.save
-    "We have added your vote: #{post.cell} for #{post.ballot} (#{singer.tally})"
+    "We have added your vote: #{post.cell} for #{post.ballot} (#{singer.name}). The current tally for #{singer.name} is #{singer.tally} votes."
     else
-    "Vote rejected, nice try though"
+    "Vote rejected, nice try though. (No duplicate votes)."
     end
 end
 
