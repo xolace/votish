@@ -70,3 +70,12 @@ get '/results' do
    erb :results
    end
 
+get '/add' do
+  erb :add
+end
+
+post '/create' do 
+  @person = Singer.new( :name => "#{params[:name]}" )
+  @person.save
+  erb :create
+end 
