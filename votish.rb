@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'sinatra'
 require 'datamapper'
 
@@ -36,9 +37,6 @@ helpers do
 
 end
 
-get '/' do
-  erb :default
-end
 
 get '/vote/:cell/:ballot' do
      check = Vote.first( :cell => "#{params[:cell]}" )
@@ -73,7 +71,7 @@ get '/del' do
   erb :del
 end
 
-post '/del/take' do
+post '/admin/person/delete' do
   if params[:password].to_i == 3232465674
   @person = Singer.first( :id => "#{params[:id].to_i}" )
   erb :rem
@@ -83,16 +81,22 @@ post '/del/take' do
 end
 end
 
-get '/results' do
+get '/' do
    @singers = Singer.all
    erb :results
    end
 
-get '/add' do
+get '/admin' do
+
+
+
+end
+
+get '/admin/person/add' do
   erb :add
 end
 
-post '/create' do 
+post '/admin/person/add' do 
   if params[:password].to_i == 3232465674
   @person = Singer.new( :name => "#{params[:name]}" )
   @person.save

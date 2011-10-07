@@ -1,14 +1,29 @@
 <title>Voting Results</title>
+
 <h1>Voting Results</h1>
 
 <% unless @singers.empty? %>
+
 <ul>
+
 <% @singers.each do |singer| %>
+
 <li <%= "singer:" if singer.name %>>
+
 #<%= singer.id %> (<%= singer.name %>)  ==> <%= singer.tally %> 
+
 </li>
+
 <% end %>
+
 </ul>
+
 <% else %>
+
 <p>No one is competing!</p>
+
 <% end %>
+
+<br /><br /><br /><br />
+
+<a href="/admin">Admin</a>
