@@ -53,7 +53,7 @@ get '/vote/:cell/:ballot' do
     singer.tally += 1
     puts singer.save
     puts post.save
-    "We have added your vote: #{post.cell} for #{post.ballot}"
+    "We have added your vote: #{post.cell} for #{post.ballot} (#{singer.tally})"
     else
     "Vote rejected, nice try though"
     end
