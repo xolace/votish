@@ -36,6 +36,10 @@ helpers do
 
 end
 
+get '/' do
+  erb :default
+end
+
 get '/vote/:cell/:ballot' do
      check = Vote.first( :cell => "#{params[:cell]}" )
      if check.nil?
@@ -56,13 +60,23 @@ get '/vote/:cell/:ballot' do
 end
 
 
-get '/add/:name' do
+get '/add/:name/3233465674' do
   singer = Singer.first_or_create({ :name => "#{params[:name]}" }, {
     :name => "#{params[:name]}",
   })
   puts singer.save
   "#{params[:name]}'s voting code is #{singer.id}"
 
+end
+
+get '/del/3232465874' do
+  erb :del
+end
+
+post '/del/3232465674/take' do
+  @singer = Singer.first( :id => "#{params[:id]}" )
+  erb :rem
+  @singer.destroy
 end
 
 get '/results' do
@@ -75,7 +89,11 @@ get '/add' do
 end
 
 post '/create' do 
+  if params[:password].to_i == 3232465674
   @person = Singer.new( :name => "#{params[:name]}" )
   @person.save
   erb :create
+  else
+  "Permission denied"
+  end
 end 
