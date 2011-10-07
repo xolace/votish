@@ -1,4 +1,4 @@
-require 'rubygems'
+require 'sinatra'
 require 'datamapper'
 
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/votish.db")
