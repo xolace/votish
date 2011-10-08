@@ -1,7 +1,13 @@
 <title>Remove Contestant</title>
 <h1>Remove Contestant</h1>
-<form action="/admin/person/del" method="post">
-Voting code of the person to remove: <input type="text" name="id" />
+
+<% singer = Singer.first(:id => params[:id].to_i) %>
+
+<form action="/admin/person/delete" method="post">
+Are you sure you want to remove <%= singer.name %> (Votes: <%= singer.tally %>) (Code: <%= singer.id %>) ? <br />
+
+If so, type your password, and hit submit. <br />
+<input type="hidden" name="id" value="<%= params[:id] %>" />
 Password: <input type="password" name="password" />
 <input type="submit" name="submit" value="Submit" />
 </form>
