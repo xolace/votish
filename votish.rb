@@ -1,7 +1,8 @@
 require 'sinatra'
 require 'datamapper'
 
-DataMapper::setup(:default, "")
+#DataMapper::setup(:default, "")
+DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/votish.db")
 
 class Vote
   include DataMapper::Resource
