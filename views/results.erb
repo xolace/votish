@@ -3,20 +3,22 @@
 <h1>Voting Results</h1>
 
 <% unless @singers.empty? %>
-
+<% place = 1 %>
 <ul>
 
 <% @singers.each do |singer| %>
 
-<li <%= "singer:" if singer.name %>>
+<li>
 
-#<%= singer.id %> (<%= singer.name %>)  ==> <%= singer.tally %> 
-
+#<%= place %> Votes:<b> [ <%= singer.tally %> ] </b><a href="/del/person/<%= singer.id %>">[x]</a> Name: (<%= singer.name %>) {VOTING CODE: <%= singer.id %> }
+<% place += 1 %>
 </li>
 
 <% end %>
 
 </ul>
+
+Total votes: <%= Vote.count %>
 
 <% else %>
 
