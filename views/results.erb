@@ -10,7 +10,7 @@
 
 <li>
 
-#<%= place %> Votes:<b> [ <%= singer.tally %> ] </b><a href="/del/person/<%= singer.id %>">[x]</a> Name: (<%= singer.name %>) {VOTING CODE: <%= singer.id %> }
+#<%= place %> Votes:<b> [ <%= singer.votes.count %> ] </b><a href="/del/person/<%= singer.id %>">[x]</a> Name: (<%= singer.name %>) {VOTING CODE: <%= singer.id %> }
 <% place += 1 %>
 </li>
 
