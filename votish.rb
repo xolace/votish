@@ -98,24 +98,22 @@ end
 
 post '/admin' do
   if params[:password] == "vitaminwater"
+    @destiny = "/admin"
     unless params[:softreset].nil?
-      singers = Singer.all
       votes = Vote.all
-      singers.each do |singer|
-        singer.tally = 0
-        singer.save
-      end
       votes.destroy
-      "Tallies have been reset, and validation table cleared. The voting may commence again."
+      @message = "Tallies have been reset, and validation table cleared. The voting may commence again."
+
     end
     unless params[:hardreset].nil?
       Vote.auto_migrate!
       Singer.auto_migrate!
-      "Clean as a baby's bottom. Everything has been erased. Everything."
+      @message = "Clean as a baby's bottom. Everything has been erased. Everything."
     end
   else
-    "Permission denied"
+    @message = "Permission denied"
   end
+  erb :redirect
 end
 
 get '/admin/person/add' do
