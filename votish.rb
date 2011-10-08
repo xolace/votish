@@ -50,6 +50,7 @@ get '/vote/:cell/:ballot' do
     check.save
     "Vote changed for this number has changed from #{rejected.name} (Votes: #{rejected.tally}) to #{singer.name} (Votes: #{singer.tally}). These tallies reflect your change of vote."
 end
+"Thanks for your vote"
 end
 
 
