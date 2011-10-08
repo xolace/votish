@@ -63,6 +63,7 @@ post '/admin/person/delete' do
   @person = Singer.first( :id => "#{params[:id].to_i}" )
   erb :rem
   @person.destroy
+  "Person deleted"
   else
   "Permission denied"
 end
@@ -87,7 +88,7 @@ post '/admin' do
 	singer.save
       end
       votes.destroy
-      "Tallies have been reset, and validation table cleared. The voting may commence again."
+     "Tallies have been reset, and validation table cleared. The voting may commence again."
     end
    unless params[:hardreset].nil?
      Vote.auto_migrate!
