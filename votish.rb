@@ -44,7 +44,7 @@ get '/vote/:cell/:ballot' do
     "We have added your vote: #{post.cell} for #{post.ballot} (#{singer.name}). The current tally for #{singer.name} is #{singer.tally} votes."
     else
     singer = Singer.first( :id => "#{params[:ballot].to_i}" )
-    rejected = Singer.first ( :id => "#{check.ballot.to_i}" )
+    rejected = Singer.first( :id => "#{check.ballot.to_i}" )
     rejected.tally -= 1;
     singer.tally += 1;
     rejected.save
