@@ -31,6 +31,7 @@ end
 get '/vote/:cell/:ballot' do
      check = Vote.first( :cell => "#{params[:cell]}" )
      if check.nil?
+     "Vote cast"
      @singer = Singer.first( :id => "#{params[:ballot].to_i}" )
      @post = Vote.create(
       :cell => "#{params[:cell]}",
@@ -40,8 +41,6 @@ get '/vote/:cell/:ballot' do
     @singer.tally += 1
     @singer.save
     @post.save
-    #"We have added your vote: #{post.cell} for #{post.ballot} (#{singer.name}). The current tally for #{singer.name} is #{singer.tally} votes."
-    erb :success
     end
     if check
     singer = Singer.first( :id => "#{params[:ballot].to_i}" )
