@@ -54,6 +54,7 @@ get '/vote/:cell/:ballot' do
     check.ballot = params[:ballot].to_i
     rejected.save
     singer.save
+    check.save
     "Vote changed for this number has changed from #{rejected.name} (Votes: #{rejected.tally}) to #{singer.name} (Votes: #{singer.tally}). These tallies reflect your change of vote."
 end
 end    
