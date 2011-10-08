@@ -59,7 +59,7 @@ get '/del/person/:id' do
 end
 
 post '/admin/person/delete' do
-  if params[:password].to_i == "vitaminwater"
+  if params[:password] == "vitaminwater"
   @person = Singer.first( :id => "#{params[:id].to_i}" )
   erb :rem
   @person.destroy
@@ -78,7 +78,7 @@ get '/admin' do
 end
 
 post '/admin' do
-  if params[:password].to_i == "vitaminwater"
+  if params[:password] == "vitaminwater"
     unless params[:softreset].nil?
       singers = Singer.all
       votes = Vote.all
@@ -104,7 +104,7 @@ get '/admin/person/add' do
 end
 
 post '/admin/person/add' do 
-  if params[:password].to_i == "vitaminwater"
+  if params[:password] == "vitaminwater"
   @person = Singer.new( :name => "#{params[:name]}" )
   @person.save
   erb :create
