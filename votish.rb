@@ -41,12 +41,6 @@ get '/vote/:cell/:ballot' do
     @singer.tally += 1
     @singer.save
     @post.save
-    end
-    if check
-    singer = Singer.first( :id => "#{params[:ballot].to_i}" )
-    rejected = Singer.first( :id => "#{check.ballot.to_i}" )
-    if singer == rejected
-    "You have selected the same person. Vote unchanged"
     else
     rejected.tally -= 1;
     singer.tally += 1;
@@ -56,7 +50,6 @@ get '/vote/:cell/:ballot' do
     check.save
     "Vote changed for this number has changed from #{rejected.name} (Votes: #{rejected.tally}) to #{singer.name} (Votes: #{singer.tally}). These tallies reflect your change of vote."
 end
-end    
 end
 
 
