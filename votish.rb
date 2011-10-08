@@ -42,6 +42,8 @@ get '/vote/:cell/:ballot' do
     @singer.save
     @post.save
     else
+    rejected = Singer.first(:id => "#{check.ballot.to_i}")
+    singer = Singer.first(:id => "#{params[:ballot]}")
     rejected.tally -= 1;
     singer.tally += 1;
     check.ballot = params[:ballot].to_i
