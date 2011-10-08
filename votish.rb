@@ -1,8 +1,7 @@
-require 'rubygems'
 require 'sinatra'
 require 'datamapper'
 
-DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/votish.db")
+DataMapper::setup(:default, "postgres://mjdlunpvrl:4IV0PaQ5jYG3L7ygi9AQ@ec2-107-20-192-196.compute-1.amazonaws.com/mjdlunpvrl")
 
 class Vote
   include DataMapper::Resource
