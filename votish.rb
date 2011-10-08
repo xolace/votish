@@ -44,12 +44,14 @@ get '/vote/:cell/:ballot' do
     else
     rejected = Singer.first(:id => "#{check.ballot.to_i}")
     singer = Singer.first(:id => "#{params[:ballot]}")
+    unless rejected == singer
     rejected.tally -= 1;
     singer.tally += 1;
     check.ballot = params[:ballot].to_i
     rejected.save
     singer.save
     check.save
+end
     "Vote changed for this number has changed from #{rejected.name} (Votes: #{rejected.tally}) to #{singer.name} (Votes: #{singer.tally}). These tallies reflect your change of vote."
 end
 "Thanks for your vote"
