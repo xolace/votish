@@ -42,15 +42,20 @@ get '/vote/:cell/:ballot' do
     puts singer.save
     puts post.save
     "We have added your vote: #{post.cell} for #{post.ballot} (#{singer.name}). The current tally for #{singer.name} is #{singer.tally} votes."
-    else
+    end
+    if check
     singer = Singer.first( :id => "#{params[:ballot].to_i}" )
     rejected = Singer.first( :id => "#{check.ballot.to_i}" )
+    if singer == rejected
+    "You have selected the same person. Vote unchanged"
+    else
     rejected.tally -= 1;
     singer.tally += 1;
     rejected.save
     singer.save
     "Vote changed for this number has changed from #{rejected.name} (Votes: #{rejected.tally}) to #{singer.name} (Votes: #{singer.tally}). These tallies reflect your change of vote."
-    end
+end
+end    
 end
 
 
