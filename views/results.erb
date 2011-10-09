@@ -1,31 +1,35 @@
 <title>Voting Results</title>
 
 <h1>Voting Results</h1>
+Hello <%= session[:name] if session[:name] %>! <% unless session? %> <a href="/login">Login</a> <% end %>
+
 
 <% unless @singers.empty? %>
-<% place = 1 %>
-<ul>
+    <% place = 1 %>
+    <ul>
 
-<% @singers.each do |singer| %>
+      <% @singers.each do |singer| %>
 
-<li>
+          <li>
 
-#<%= place %> Votes:<b> [ <%= singer.votes.count %> ] </b><a href="/del/person/<%= singer.id %>">[x]</a> Name: (<%= singer.name %>) {VOTING CODE: <%= singer.id %> }
-<% place += 1 %>
-</li>
+            #<%= place %> Votes:<b> [ <%= singer.votes.count %> ] </b><a href="/del/person/<%= singer.id %>"><% if session? %>[x]<% end %></a>
+            Name: (<%= singer.name %>) {VOTING CODE: <%= singer.id %> }
+            <% place += 1 %>
+          </li>
 
-<% end %>
+      <% end %>
 
-</ul>
+    </ul>
 
-Total votes: <%= Vote.count %>
+    Total votes: <%= Vote.count %>
 
 <% else %>
 
-<p>No one is competing!</p>
+    <p>No one is competing!</p>
 
 <% end %>
 
-<br /><br /><br /><br />
-
-<a href="/admin">Admin</a>
+<br/><br/><br/><br/>
+<% if session? %>
+<a href="/admin">Admin</a> <a href="/admin/person/add">Add person</a>
+<% end %>
