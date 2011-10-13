@@ -1,7 +1,9 @@
 <title>Voting Results</title>
 
 <h1>Voting Results</h1>
-Hello <%= session[:name] if session[:name] %>! <% unless session? %> <a href="/login">Login</a> <% end %>
+Hello <%= session[:name] if session[:name] %>!
+<% unless session? %> <a href="/login">Login</a>
+<% end %>
 
 
 <% unless @singers.empty? %>
@@ -12,7 +14,9 @@ Hello <%= session[:name] if session[:name] %>! <% unless session? %> <a href="/l
 
           <li>
 
-            #<%= place %> Votes:<b> [ <%= singer.votes.count %> ] </b><a href="/del/person/<%= singer.id %>"><% if session? %>[x]<% end %></a>
+            #<%= place %> Votes:<b> [ <%= singer.votes.count %> ] </b><a href="/del/person/<%= singer.id %>">
+            <% if session? %>[x]
+            <% end %></a>
             Name: (<%= singer.name %>) {VOTING CODE: <%= singer.id %> }
             <% place += 1 %>
           </li>
@@ -31,5 +35,5 @@ Hello <%= session[:name] if session[:name] %>! <% unless session? %> <a href="/l
 
 <br/><br/><br/><br/>
 <% if session? %>
-<a href="/admin">Admin</a> <a href="/admin/person/add">Add person</a>
+    <a href="/admin">Admin</a> <a href="/admin/person/add">Add person</a> <a href="/logout">logout</a>
 <% end %>

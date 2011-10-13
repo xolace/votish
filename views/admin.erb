@@ -12,13 +12,20 @@
   This will delete everything. Period.
 
 
-
   <br/>
   <br/>
-  <input type="submit" name="softreset" value="Soft Reset" />
-  <input type="submit" name="hardreset" value="Hard Reset" />
+  <input type="submit" name="softreset" value="Soft Reset"/>
+  <input type="submit" name="hardreset" value="Hard Reset"/>
   <br/><br/>
 </form>
+
+<ul>
+  <% @records.each do |record| %>
+      <li><b><%= record.ip %></b> -- <%= record.votes.count %> [
+        <a href="/admin/del/votes/<%= record.id %>">eliminate votes</a> ]
+      </li>
+  <% end %>
+</ul>
 
 
 To add users, click <a href="/admin/person/add">here</a>

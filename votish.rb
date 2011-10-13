@@ -2,16 +2,23 @@ require 'rubygems'
 require 'sinatra'
 require 'sinatra/session'
 require 'datamapper'
+require 'dm-types'
 
 DataMapper::setup(:default, "")
 #DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/votish.db")
+
+illegalvote = "Illegal vote. To have your vote counted, text 'BYUHLSH <your vote here>' to 41411"
+legalip = ""
+
 
 class Vote
   include DataMapper::Resource
   property :id, Serial
   property :cell, String
   property :date, DateTime
+  property :ip, IPAddress
   belongs_to :singer
+  belongs_to :history
 end
 
 
@@ -21,36 +28,50 @@ class Singer
   property :name, String
   has n, :votes
 
-  def counting
-    puts self.relationships[:votes].inspect
-  end
-
 end
+
+class History
+  include DataMapper::Resource
+  property :id, Serial
+  property :legal, Boolean, :default => false
+  property :ip, IPAddress
+  has n, :votes
+end
+
 
 Singer.auto_migrate! unless Singer.storage_exists?
 Vote.auto_migrate! unless Vote.storage_exists?
-
-
-class Admin
-  include DataMapper::Resource
-  property :id, Serial
-  property :username, String
-  property :password, String
-  property :elevation, Integer
-end
+History.auto_migrate! unless History.storage_exists?
 
 
 helpers do
+  def log(ip)
+    inmate = Vote.first(:ip => ip)
+    if (inmate.nil?)
+      record = History.new
+      record.ip = ip
+      record.legal = false
+      record.save!
+    end
+  end
 
 end
 
 set :session_fail, '/login'
 set :session_secret, 'secretcodehere'
 
-get '/test' do
-  singer = Singer.first
-  "#{singer.name} has #{singer.votes.count}"
-  puts Singer.relationships[:votes].counting
+before '/vote/*' do
+  log(request.ip)
+end
+
+get '/logout' do
+  session.delete
+  redirect '/'
+end
+
+get '/inspect' do
+  records = History.first
+  "#{records.ip} voted #{records.votes.count} times."
 end
 
 get '/vote/:cell/:ballot' do
@@ -60,10 +81,12 @@ get '/vote/:cell/:ballot' do
       @post = Vote.create(
           :cell => "#{params[:cell]}",
           :singer => Singer.first(:id => "#{params[:ballot].to_i}"),
-          :date => Time.now
+          :date => Time.now,
+          :ip => request.ip,
+          :history => History.first(:ip => request.ip)
       )
       @post.save
-      @message = "Your vote has been cast for #{@post.singer.name}. Thanks! (Ballot cast from #{@post.cell})"
+      @message = "Your vote has been cast for #{@post.singer.name}. Thanks! (Ballot cast from #{@post.cell} (Logged: #{@post.ip} voted #{@post.history.votes.count} times.)"
     else
       unless check.singer.id == params[:ballot]
         rejected = check.singer.name
@@ -99,7 +122,7 @@ post '/admin/person/delete' do
     @destiny = "/"
     erb :redirect
   else
-    redirect "/login"
+    redirect '/login'
   end
 end
 
@@ -126,9 +149,21 @@ end
 
 get '/admin' do
   if session?
+    @records = History.all
     erb :admin
   else
     redirect '/login'
+  end
+end
+
+get '/admin/del/votes/:id' do
+  if session?
+    reject = History.get(params[:id])
+    reject.votes.destroy
+    reject.destroy
+    @message = "Successfully deleted those scumbag votes"
+    @destiny = '/admin'
+    erb :redirect
   end
 end
 
@@ -144,6 +179,7 @@ post '/admin' do
     unless params[:hardreset].nil?
       Vote.auto_migrate!
       Singer.auto_migrate!
+      History.auto_migrate!
       @message = "Clean as a baby's bottom. Everything has been erased. Everything."
     end
   else
